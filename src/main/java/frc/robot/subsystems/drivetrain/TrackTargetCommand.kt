@@ -1,7 +1,10 @@
 package frc.robot.subsystems.drivetrain
 
+import com.pathplanner.lib.PathConstraints
 import edu.wpi.first.math.controller.PIDController
 import edu.wpi.first.math.controller.ProfiledPIDController
+import edu.wpi.first.math.geometry.Pose2d
+import edu.wpi.first.math.geometry.Rotation2d
 import edu.wpi.first.math.trajectory.TrapezoidProfile
 import edu.wpi.first.wpilibj2.command.CommandBase
 import frc.robot.Drive
@@ -28,16 +31,10 @@ class TrackTargetCommand : CommandBase() {
     val result = RobotContainer.camera.latestResult
     if (!result.hasTargets()) return
     val bestTarget = result.bestTarget
-//    val range = PhotonUtils.calculateDistanceToTargetMeters(
-//      Drive.CAMERA_HEIGHT_METERS,
-//      Drive.TARGET_HEIGHT_METERS,
-//      Drive.CAMERA_PITCH_RADIANS,
-//      Units.degreesToRadians(bestTarget.pitch)
-//    )
     val range = bestTarget.bestCameraToTarget.x
-    val forwardSpeed = -FORWARD_CONTROLLER.calculate(range, Drive.GOAL_RANGE_DISTANCE_METERS)
-    val rotationSpeed = -TURN_CONTROLLER.calculate(bestTarget.yaw, 0.0)
-    DriveSubsystem.arcadeDrive(-forwardSpeed, rotationSpeed)
+    // If the intended range is already met, then don't proceed further.
+    if (Drive.GOAL_RANGE_DISTANCE_METERS >= range) return
+    DriveSubsystem.loadRelativeTrajectoryToRamseteCommand(PathConstraints(3.0, 1.0), Pose2d(range - Drive.GOAL_RANGE_DISTANCE_METERS, 0.0, Rotation2d())).schedule()
   }
 
   override fun isFinished() = FORWARD_CONTROLLER.atSetpoint() && TURN_CONTROLLER.atSetpoint()

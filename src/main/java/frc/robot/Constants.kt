@@ -5,7 +5,6 @@ import edu.wpi.first.math.geometry.Transform3d
 import edu.wpi.first.math.geometry.Translation3d
 import edu.wpi.first.math.util.Units
 import edu.wpi.first.wpilibj.shuffleboard.Shuffleboard
-import frc.robot.shuffleboard.AdjustableDouble
 
 /**
  * Even though ShuffleboardTabs technically aren't stateless objects, it's more
@@ -45,6 +44,15 @@ class Drive {
     val TARGET_HEIGHT_METERS = Units.feetToMeters(3.5)
     val CAMERA_PITCH_RADIANS = Units.degreesToRadians(0.0)
     val GOAL_RANGE_DISTANCE_METERS = Units.feetToMeters(2.25)
+
+    const val KS_VOLTS = 2.55921
+    const val KV_VOLT_SECONDS_PER_METER = 1.0509
+    const val KA_VOLT_SECONDS_SQUARED_PER_METER = 1.8342
+    const val P_DRIVE_VELOCITY = 0.1509
+
+    // Source: https://docs.wpilib.org/en/stable/docs/software/pathplanning/trajectory-tutorial/entering-constants.html#:~:text=public%20static%20final%20double%20kRamseteB,double%20kRamseteZeta%20%3D%200.7%3B
+    const val RAMSETE_B = 2.0
+    const val RAMSETE_ZETA = 0.7
 
     const val LINEAR_P = 0.26
     const val LINEAR_D = 0.05
