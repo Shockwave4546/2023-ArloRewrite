@@ -88,5 +88,6 @@ class Elevator {
 class Shooter {
   companion object {
     const val MOTOR_ID = 3
+    const val SPEED = 0.8;
   }
 }

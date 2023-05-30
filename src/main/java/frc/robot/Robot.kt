@@ -38,7 +38,7 @@ object Robot : TimedRobot() {
 
   override fun teleopInit() {
     DriveSubsystem.initTeleop(RobotContainer.driveController)
-    RobotContainer.driveController.a().onTrue {
+    RobotContainer.driveController.y().onTrue {
       val result = RobotContainer.camera.latestResult
       if (!result.hasTargets()) return@onTrue setOf(DriveSubsystem)
       val bestTarget = result.bestTarget
